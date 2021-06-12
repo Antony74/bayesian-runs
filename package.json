@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "lint": "eslint . --ext .ts --ext .tsx",
+    "preinstall": "npx npm-force-resolutions",
     "prettier": "prettier --write src/*.{ts,js,tsx} && eslint src --ext .ts --ext .tsx --fix",
     "start": "parcel src/index.html"
   },
@@ -24,6 +25,9 @@
     "parcel": "^2.0.0-nightly.718",
     "prettier": "^2.3.1",
     "typescript": "^4.3.2"
+  },
+  "resolutions": {
+    "postcss": "8.2.15"
   },
   "prettier": {
     "singleQuote": true
