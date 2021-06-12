@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Antony74/bayesian-runs#readme",
   "dependencies": {
+    "@fontsource/roboto": "^4.4.5",
+    "@material-ui/core": "^4.11.4",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
