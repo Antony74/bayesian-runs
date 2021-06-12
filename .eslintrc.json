@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "eqeqeq": ["error"],
+    "max-len": ["error", { "code": 140 }],
+    "quotes": ["error", "single"],
+    "no-tabs": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts*"],
+      "plugins": ["@typescript-eslint", "no-mixed-operators"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/semi": ["error"],
+        "@typescript-eslint/camelcase": ["off"],
+        "@typescript-eslint/no-empty-function": ["off"],
+        "@typescript-eslint/no-shadow": ["error"],
+        "@typescript-eslint/interface-name-prefix": ["off"],
+        "no-mixed-operators/no-mixed-operators": ["error"],
+        "sort-imports": ["warn", {"ignoreCase": true}]
+      }
+    }
+  ]
+}

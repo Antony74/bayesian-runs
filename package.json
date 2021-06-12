@@ -1,0 +1,31 @@
+{
+  "name": "bayesian-runs",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint . --ext .ts --ext .tsx",
+    "prettier": "prettier --write src/*.{ts,js,tsx} && eslint src --ext .ts --ext .tsx --fix",
+    "start": "parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Antony74/bayesian-runs.git"
+  },
+  "author": "Antony74",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Antony74/bayesian-runs/issues"
+  },
+  "homepage": "https://github.com/Antony74/bayesian-runs#readme",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "eslint": "^7.28.0",
+    "eslint-plugin-no-mixed-operators": "^1.1.1",
+    "parcel": "^2.0.0-beta.2",
+    "prettier": "^2.3.1",
+    "typescript": "^4.3.2"
+  },
+  "prettier": {
+    "singleQuote": true
+  }
+}
