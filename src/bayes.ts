@@ -1,5 +1,5 @@
-function wrapUnary(fn: (value: number) => number) {
-  return function (a: number | number[]) {
+const wrapUnary = (fn: (value: number) => number) => {
+  return (a: number | number[]) => {
     if (typeof a === 'number') {
       return fn(a);
     } else if (Array.isArray(a)) {
@@ -12,10 +12,10 @@ function wrapUnary(fn: (value: number) => number) {
       throw 'Not supported';
     }
   };
-}
+};
 
-function wrapBinary(fn: (value1: number, value2: number) => number) {
-  return function (a: number | number[], b: number | number[]): number[] {
+const wrapBinary = (fn: (value1: number, value2: number) => number) => {
+  return (a: number | number[], b: number | number[]): number[] => {
     if (typeof a === 'number' && typeof b === 'number') {
       return [fn(a, b)];
     } else if (typeof a === 'number' && Array.isArray(b)) {
@@ -38,32 +38,25 @@ function wrapBinary(fn: (value1: number, value2: number) => number) {
       throw 'Not supported';
     }
   };
-}
+};
 
 // Define various wrappers
-const div = wrapBinary(function (a, b) {
-  return a / b;
-});
-const mul = wrapBinary(function (a, b) {
-  return a * b;
-});
+const div = wrapBinary((a, b) => a / b);
+const mul = wrapBinary((a, b) => a * b);
 const pow = wrapBinary(Math.pow);
-
-const neg = wrapUnary(function (a) {
-  return -a;
-});
+const neg = wrapUnary((a) => -a);
 const exp = wrapUnary(Math.exp);
 
-function factorial(x: number) {
+const factorial = (x: number) => {
   let f = 1;
   for (let n = 1; n <= x; ++n) {
     f *= n;
   }
 
   return f;
-}
+};
 
-function sum(arr: number[]) {
+const sum = (arr: number[]) => {
   let result = 0;
 
   for (let n = 0; n < arr.length; ++n) {
@@ -71,18 +64,18 @@ function sum(arr: number[]) {
   }
 
   return result;
-}
+};
 
-function possion(x: number, lambda: number | number[]) {
+const possion = (x: number, lambda: number | number[]) => {
   // Only do it this way for very small values of x
   return div(mul(exp(neg(lambda)), pow(lambda, x)), factorial(x));
-}
+};
 
-function bayes(likelihoods: number | number[], priors: number | number[]) {
+const bayes = (likelihoods: number | number[], priors: number | number[]) => {
   const lp = mul(likelihoods, priors);
   const evidence = sum(lp);
   return div(lp, evidence);
-}
+};
 
 // Choose a sample of possible lambda
 const lambda: number[] = [];
@@ -102,9 +95,9 @@ const likelihoods = possion(2, lambda);
 // Calculate posteriors
 const posteriors = bayes(likelihoods, priors);
 
-function p(t: number) {
+const p = (t: number) => {
   const possibities = exp(neg(mul(lambda, t)));
   return sum(mul(possibities, posteriors));
-}
+};
 
 console.log('p(1.72)=' + p(1.72));

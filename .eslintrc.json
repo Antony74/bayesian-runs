@@ -11,7 +11,7 @@
   "overrides": [
     {
       "files": ["*.ts*"],
-      "plugins": ["@typescript-eslint", "no-mixed-operators"],
+      "plugins": ["@typescript-eslint", "no-mixed-operators", "prefer-arrow"],
       "extends": [
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended"
@@ -23,6 +23,7 @@
         "@typescript-eslint/no-shadow": ["error"],
         "@typescript-eslint/interface-name-prefix": ["off"],
         "no-mixed-operators/no-mixed-operators": ["error"],
+        "prefer-arrow/prefer-arrow-functions": ["error"],
         "sort-imports": ["warn", {"ignoreCase": true}]
       }
     }

@@ -25,6 +25,7 @@
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
     "eslint-plugin-no-mixed-operators": "^1.1.1",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
     "parcel": "^2.0.0-nightly.718",
     "prettier": "^2.3.1",
     "react": "^17.0.2",
