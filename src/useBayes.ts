@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { bayes, sum } from './bayes';
+import { bayes, sum } from './stats';
 
 interface BayesState {
   data: number[];
