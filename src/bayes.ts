@@ -3,8 +3,8 @@ function wrapUnary(fn: (value: number) => number) {
     if (typeof a === 'number') {
       return fn(a);
     } else if (Array.isArray(a)) {
-      var arrOut = Array(a.length);
-      for (var n = 0; n < a.length; ++n) {
+      const arrOut = Array(a.length);
+      for (let n = 0; n < a.length; ++n) {
         arrOut[n] = fn(a[n]);
       }
       return arrOut;
@@ -16,32 +16,24 @@ function wrapUnary(fn: (value: number) => number) {
 
 function wrapBinary(fn: (value1: number, value2: number) => number) {
   return function (a: number | number[], b: number | number[]): number[] {
-    var arrOut, n;
-
     if (typeof a === 'number' && typeof b === 'number') {
       return [fn(a, b)];
     } else if (typeof a === 'number' && Array.isArray(b)) {
-      arrOut = Array(b.length);
-      for (n = 0; n < b.length; ++n) {
-        arrOut[n] = fn(a, b[n]);
-      }
-      return arrOut;
+      return Array(b.length)
+        .fill(0)
+        .map((_v, n) => fn(a, b[n]));
     } else if (Array.isArray(a) && typeof b === 'number') {
-      arrOut = Array(a.length);
-      for (n = 0; n < a.length; ++n) {
-        arrOut[n] = fn(a[n], b);
-      }
-      return arrOut;
+      return Array(a.length)
+        .fill(0)
+        .map((_v, n) => fn(a[n], b));
     } else if (Array.isArray(a) && Array.isArray(b)) {
       if (a.length !== b.length) {
         throw 'Array lengths differ';
       }
 
-      arrOut = Array(a.length);
-      for (n = 0; n < a.length; ++n) {
-        arrOut[n] = fn(a[n], b[n]);
-      }
-      return arrOut;
+      return Array(a.length)
+        .fill(0)
+        .map((_v, n) => fn(a[n], b[n]));
     } else {
       throw 'Not supported';
     }
@@ -49,22 +41,22 @@ function wrapBinary(fn: (value1: number, value2: number) => number) {
 }
 
 // Define various wrappers
-var div = wrapBinary(function (a, b) {
+const div = wrapBinary(function (a, b) {
   return a / b;
 });
-var mul = wrapBinary(function (a, b) {
+const mul = wrapBinary(function (a, b) {
   return a * b;
 });
-var pow = wrapBinary(Math.pow);
+const pow = wrapBinary(Math.pow);
 
-var neg = wrapUnary(function (a) {
+const neg = wrapUnary(function (a) {
   return -a;
 });
-var exp = wrapUnary(Math.exp);
+const exp = wrapUnary(Math.exp);
 
 function factorial(x: number) {
-  var f = 1;
-  for (var n = 1; n <= x; ++n) {
+  let f = 1;
+  for (let n = 1; n <= x; ++n) {
     f *= n;
   }
 
@@ -72,9 +64,9 @@ function factorial(x: number) {
 }
 
 function sum(arr: number[]) {
-  var result = 0;
+  let result = 0;
 
-  for (var n = 0; n < arr.length; ++n) {
+  for (let n = 0; n < arr.length; ++n) {
     result += arr[n];
   }
 
@@ -94,21 +86,21 @@ function bayes(likelihoods: number | number[], priors: number | number[]) {
 
 // Choose a sample of possible lambda
 const lambda: number[] = [];
-for (var n = 0.1; n <= 20; n += 0.1) {
+for (let n = 0.1; n <= 20; n += 0.1) {
   lambda.push(n);
 }
 
-var N = lambda.length;
+const N = lambda.length;
 
 // Choose some priors
-var priors = Array(N);
+const priors = Array(N);
 priors.fill(1 / N);
 
 // Calculate likelihoods
-var likelihoods = possion(2, lambda);
+const likelihoods = possion(2, lambda);
 
 // Calculate posteriors
-var posteriors = bayes(likelihoods, priors);
+const posteriors = bayes(likelihoods, priors);
 
 function p(t: number) {
   const possibities = exp(neg(mul(lambda, t)));
