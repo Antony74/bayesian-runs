@@ -1,13 +1,13 @@
+import '@fontsource/roboto';
+import * as React from 'react';
 import {
   Box,
-  Button as RawButton,
   Container,
   makeStyles,
+  Button as RawButton,
   Typography,
 } from '@material-ui/core';
-import * as React from 'react';
 import ReactDOM from 'react-dom';
-import '@fontsource/roboto';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Button = (props) => {
-    const classes = useStyles();
-    return (
+  const classes = useStyles();
+  return (
     <RawButton
       className={classes.button}
       variant="contained"
