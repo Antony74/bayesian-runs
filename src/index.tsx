@@ -43,8 +43,8 @@ const App = () => {
             <Typography>I have a computer program/job. I ran it and</Typography>
           </Box>
           <Box>
-            <Button onClick={bayesHook.addSuccess}>It succeeded</Button>
-            <Button onClick={bayesHook.addFailure}>It failed</Button>
+            <Button onClick={() => bayesHook.setSuccessCount(bayesHook.state.successCount + 1)}>It succeeded</Button>
+            <Button onClick={() => bayesHook.setFailureCount(bayesHook.state.failureCount + 1)}>It failed</Button>
             <Button onClick={bayesHook.reset} color="secondary">
               Reset
             </Button>
