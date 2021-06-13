@@ -86,14 +86,14 @@ for (let n = 0.1; n <= 20; n += 0.1) {
 const N = lambda.length;
 
 // Choose some priors
-const priors = Array(N);
+export const priors = Array(N);
 priors.fill(1 / N);
 
 // Calculate likelihoods
-const likelihoods = possion(2, lambda);
+export const likelihoods = possion(2, lambda);
 
 // Calculate posteriors
-const posteriors = bayes(likelihoods, priors);
+export const posteriors = bayes(likelihoods, priors);
 
 const p = (t: number) => {
   const possibities = exp(neg(mul(lambda, t)));
