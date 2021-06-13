@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from 'victory';
-import { posteriors } from './bayes';
 import ReactDOM from 'react-dom';
+import useBayes from './useBayes';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,13 +29,12 @@ const Button = (props) => {
   );
 };
 
-const data = posteriors.map((y, x) => {
-  return { x, y };
-});
-
 const centerProps = { align: 'center' } as BoxProps;
+const xTicks = 10;
 
 const App = () => {
+  const bayesHook = useBayes();
+
   return (
     <div>
       <Container>
@@ -44,9 +43,11 @@ const App = () => {
             <Typography>I have a computer program/job. I ran it and</Typography>
           </Box>
           <Box>
-            <Button>It succeeded</Button>
-            <Button>It failed</Button>
-            <Button color="secondary">Reset</Button>
+            <Button onClick={bayesHook.addSuccess}>It succeeded</Button>
+            <Button onClick={bayesHook.addFailure}>It failed</Button>
+            <Button onClick={bayesHook.reset} color="secondary">
+              Reset
+            </Button>
           </Box>
           <Box>
             <VictoryChart
@@ -56,7 +57,9 @@ const App = () => {
             >
               <VictoryAxis
                 label="Chance of failure"
-                tickValues={[0, 100]}
+                tickValues={Array(xTicks + 1)
+                  .fill(0)
+                  .map((_v, i) => i / xTicks)}
                 style={{
                   tickLabels: { fontSize: '8px', padding: 1 },
                   axisLabel: { padding: 15 },
@@ -70,8 +73,11 @@ const App = () => {
                   axisLabel: { padding: 30 },
                 }}
               ></VictoryAxis>
-              <VictoryBar data={data}></VictoryBar>
+              <VictoryBar data={bayesHook.getGraphData()}></VictoryBar>
             </VictoryChart>
+            <Typography>
+              Sum: {bayesHook.getSum()} (sanity check, should be close to 1){' '}
+            </Typography>
           </Box>
         </Box>
       </Container>

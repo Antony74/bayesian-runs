@@ -56,7 +56,7 @@ const factorial = (x: number) => {
   return f;
 };
 
-const sum = (arr: number[]) => {
+export const sum = (arr: number[]): number => {
   let result = 0;
 
   for (let n = 0; n < arr.length; ++n) {
@@ -71,7 +71,10 @@ const possion = (x: number, lambda: number | number[]) => {
   return div(mul(exp(neg(lambda)), pow(lambda, x)), factorial(x));
 };
 
-const bayes = (likelihoods: number | number[], priors: number | number[]) => {
+export const bayes = (
+  likelihoods: number | number[],
+  priors: number | number[]
+): number[] => {
   const lp = mul(likelihoods, priors);
   const evidence = sum(lp);
   return div(lp, evidence);
@@ -86,14 +89,14 @@ for (let n = 0.1; n <= 20; n += 0.1) {
 const N = lambda.length;
 
 // Choose some priors
-export const priors = Array(N);
+const priors = Array(N);
 priors.fill(1 / N);
 
 // Calculate likelihoods
-export const likelihoods = possion(2, lambda);
+const likelihoods = possion(2, lambda);
 
 // Calculate posteriors
-export const posteriors = bayes(likelihoods, priors);
+const posteriors = bayes(likelihoods, priors);
 
 const p = (t: number) => {
   const possibities = exp(neg(mul(lambda, t)));
