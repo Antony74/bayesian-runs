@@ -80,13 +80,28 @@ const App = () => {
           </Box>
           <Box {...spanProps}>
             <Typography {...spanProps}>It succeeded </Typography>
-            <InputNumber value="0"></InputNumber>
-            <PlusButton>+</PlusButton>
+            <InputNumber
+              value={hook.successCount}
+              onChange={(e) => hook.setSuccessCount(e.target.value)}
+            ></InputNumber>
+            <PlusButton
+              onClick={() => hook.setSuccessCount(hook.successCount + 1)}
+            >
+              +
+            </PlusButton>
             <Typography {...spanProps}>times(s).</Typography>
           </Box>
           <Box {...spanProps}>
             <Typography {...spanProps}> It failed</Typography>
-            <InputNumber value="0"></InputNumber> <PlusButton>+</PlusButton>
+            <InputNumber
+              value={hook.failureCount}
+              onChange={(e) => hook.setFailureCount(e.target.value)}
+            ></InputNumber>{' '}
+            <PlusButton
+              onClick={() => hook.setFailureCount(hook.failureCount + 1)}
+            >
+              +
+            </PlusButton>
             <Typography {...spanProps}>time(s).</Typography>
             <ContainedButton onClick={hook.reset} color="secondary">
               Reset

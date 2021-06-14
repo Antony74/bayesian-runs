@@ -54,7 +54,7 @@ const useBayes = (): BayesHook => {
       .fill(0)
       .reduce(addFailure, data);
 
-    setState({ ...state, data });
+    setState({ ...state, data, successCount: successes, failureCount: failures });
   };
 
   const hook = {
@@ -70,7 +70,7 @@ const useBayes = (): BayesHook => {
     setFailureCount: (failureCount) =>
       makeNumbers(state.successCount, failureCount),
     reset: () => {
-      setState({ ...state, data: priors });
+      setState({ ...state, data: priors, successCount: 0, failureCount: 0 });
     },
   };
 
