@@ -3,9 +3,10 @@ import * as React from 'react';
 import {
   Box,
   BoxProps,
+  Button,
   Container,
+  Input,
   makeStyles,
-  Button as RawButton,
   Typography,
 } from '@material-ui/core';
 import BChart from './BChart';
@@ -13,22 +14,54 @@ import ReactDOM from 'react-dom';
 import Stats from './Stats';
 import useBayes from './useBayes';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(0.5),
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  const spacing = theme.spacing(2);
+  return {
+    button: {
+      margin: spacing,
+    },
+    plusButton: {
+      marginTop: spacing,
+      marginBottom: spacing,
+    },
+  };
+});
 
-const Button = (props) => {
+const ContainedButton = (props) => {
   const classes = useStyles();
   return (
-    <RawButton
-      className={classes.button}
-      variant="contained"
-      {...props}
-    ></RawButton>
+    <Button className={classes.button} variant="contained" {...props}></Button>
   );
 };
+
+const PlusButton = (props) => {
+  const classes = useStyles();
+  return (
+    <Button
+      className={classes.plusButton}
+      variant="contained"
+      style={{
+        maxWidth: '30px',
+        maxHeight: '30px',
+        minWidth: '30px',
+        minHeight: '30px',
+      }}
+      {...props}
+    ></Button>
+  );
+};
+
+const InputNumber = (props) => (
+  <Input
+    style={{
+      maxWidth: '60px',
+      minWidth: '60px',
+    }}
+    {...props}
+  ></Input>
+);
+
+const spanProps = { style: { display: 'inline-block', margin: 5 } };
 
 const centerProps = { align: 'center' } as BoxProps;
 
@@ -41,19 +74,23 @@ const App = () => {
         <Box {...centerProps}>
           <Box>
             <Typography>
-              I have a computer program/job. I ran it a total of {}
+              I have a computer program/job. I ran it a total of{' '}
+              {hook.successCount + hook.failureCount} time(s).
             </Typography>
           </Box>
-          <Box>
-            <Button onClick={() => hook.setSuccessCount(hook.successCount + 1)}>
-              It succeeded
-            </Button>
-            <Button onClick={() => hook.setFailureCount(hook.failureCount + 1)}>
-              It failed
-            </Button>
-            <Button onClick={hook.reset} color="secondary">
+          <Box {...spanProps}>
+            <Typography {...spanProps}>It succeeded </Typography>
+            <InputNumber value="0"></InputNumber>
+            <PlusButton>+</PlusButton>
+            <Typography {...spanProps}>times(s).</Typography>
+          </Box>
+          <Box {...spanProps}>
+            <Typography {...spanProps}> It failed</Typography>
+            <InputNumber value="0"></InputNumber> <PlusButton>+</PlusButton>
+            <Typography {...spanProps}>time(s).</Typography>
+            <ContainedButton onClick={hook.reset} color="secondary">
               Reset
-            </Button>
+            </ContainedButton>
           </Box>
           <Box>
             <BChart graphData={hook.getGraphData()}></BChart>
