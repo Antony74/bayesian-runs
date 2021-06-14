@@ -7,8 +7,7 @@ interface BayesState {
   failureCount: number;
 }
 
-interface BayesHook {
-  state: BayesState;
+interface BayesHook extends BayesState {
   getGraphData: () => { x: number; y: number }[];
   getSum: () => number;
   setSuccessCount: (count: number) => void;
@@ -59,7 +58,7 @@ const useBayes = (): BayesHook => {
   };
 
   const hook = {
-    state,
+    ...state,
     getGraphData: () =>
       state.data.map((y, index) => {
         const x = index / N;

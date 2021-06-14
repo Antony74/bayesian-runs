@@ -33,19 +33,19 @@ const centerProps = { align: 'center' } as BoxProps;
 const xTicks = 10;
 
 const App = () => {
-  const bayesHook = useBayes();
+  const hook = useBayes();
 
   return (
     <div>
       <Container>
         <Box {...centerProps}>
           <Box>
-            <Typography>I have a computer program/job. I ran it and</Typography>
+            <Typography>I have a computer program/job. I ran it a total of {}</Typography>
           </Box>
           <Box>
-            <Button onClick={() => bayesHook.setSuccessCount(bayesHook.state.successCount + 1)}>It succeeded</Button>
-            <Button onClick={() => bayesHook.setFailureCount(bayesHook.state.failureCount + 1)}>It failed</Button>
-            <Button onClick={bayesHook.reset} color="secondary">
+            <Button onClick={() => hook.setSuccessCount(hook.successCount + 1)}>It succeeded</Button>
+            <Button onClick={() => hook.setFailureCount(hook.failureCount + 1)}>It failed</Button>
+            <Button onClick={hook.reset} color="secondary">
               Reset
             </Button>
           </Box>
@@ -73,10 +73,10 @@ const App = () => {
                   axisLabel: { padding: 30 },
                 }}
               ></VictoryAxis>
-              <VictoryBar data={bayesHook.getGraphData()}></VictoryBar>
+              <VictoryBar data={hook.getGraphData()}></VictoryBar>
             </VictoryChart>
             <Typography>
-              Sum: {bayesHook.getSum()} (sanity check, should be close to 1){' '}
+              Sum: {hook.getSum()} (sanity check, should be close to 1){' '}
             </Typography>
           </Box>
         </Box>
