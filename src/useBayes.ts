@@ -40,17 +40,20 @@ const useBayes = (): BayesHook => {
   };
 
   const makeNumbers = (successes: number, failures: number) => {
+
+    let {data, successCount, failureCount} = state;
+
     if (successes < state.successCount || failures < state.failureCount) {
-      hook.reset();
+      data = priors;
+      successCount = 0;
+      failureCount = 0;
     }
 
-    let data = state.data;
-
-    data = Array(successes - state.successCount)
+    data = Array(successes - successCount)
       .fill(0)
       .reduce(addSuccess, data);
 
-    data = Array(failures - state.failureCount)
+    data = Array(failures - failureCount)
       .fill(0)
       .reduce(addFailure, data);
 
