@@ -61,6 +61,10 @@ const InputNumber = (props) => (
   ></Input>
 );
 
+const restrictNumber = (str: string) => {
+  return parseInt(str.split('').filter(s => s >= '0' && s <= '9').join('').slice(0, 3));
+};
+
 const spanProps = { style: { display: 'inline-block', margin: 5 } };
 
 const centerProps = { align: 'center' } as BoxProps;
@@ -82,7 +86,7 @@ const App = () => {
             <Typography {...spanProps}>It succeeded </Typography>
             <InputNumber
               value={hook.successCount}
-              onChange={(e) => hook.setSuccessCount(e.target.value)}
+              onChange={(e) => hook.setSuccessCount(restrictNumber(e.target.value))}
             ></InputNumber>
             <PlusButton
               onClick={() => hook.setSuccessCount(hook.successCount + 1)}
@@ -95,7 +99,7 @@ const App = () => {
             <Typography {...spanProps}> It failed</Typography>
             <InputNumber
               value={hook.failureCount}
-              onChange={(e) => hook.setFailureCount(e.target.value)}
+              onChange={(e) => hook.setFailureCount(restrictNumber(e.target.value))}
             ></InputNumber>{' '}
             <PlusButton
               onClick={() => hook.setFailureCount(hook.failureCount + 1)}
