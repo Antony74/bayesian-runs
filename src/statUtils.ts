@@ -1,4 +1,4 @@
-import { div, mul, pow, sub } from './functionWrappers';
+import { div, mul } from './functionWrappers';
 
 export const sum = (arr: number[]): number => {
   let result = 0;
@@ -18,4 +18,3 @@ export const bayes = (
   const evidence = sum(lp);
   return div(lp, evidence);
 };
-

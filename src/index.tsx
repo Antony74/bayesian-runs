@@ -61,10 +61,6 @@ const InputNumber = (props) => (
   ></Input>
 );
 
-const restrictNumber = (str: string) => {
-  return parseInt(str.split('').filter(s => s >= '0' && s <= '9').join('').slice(0, 3));
-};
-
 const spanProps = { style: { display: 'inline-block', margin: 5 } };
 
 const centerProps = { align: 'center' } as BoxProps;
@@ -79,18 +75,16 @@ const App = () => {
           <Box>
             <Typography>
               I have a computer program/job. I ran it a total of{' '}
-              {hook.successCount + hook.failureCount} time(s).
+              {hook.successCount.get() + hook.failureCount.get()} time(s).
             </Typography>
           </Box>
           <Box {...spanProps}>
             <Typography {...spanProps}>It succeeded </Typography>
             <InputNumber
-              value={hook.successCount}
-              onChange={(e) => hook.setSuccessCount(restrictNumber(e.target.value))}
+              value={hook.successCount.get()}
+              onChange={(e) => hook.successCount.set(e.target.value)}
             ></InputNumber>
-            <PlusButton
-              onClick={() => hook.setSuccessCount(hook.successCount + 1)}
-            >
+            <PlusButton onClick={() => hook.successCount.increment()}>
               +
             </PlusButton>
             <Typography {...spanProps}>times(s).</Typography>
@@ -98,12 +92,12 @@ const App = () => {
           <Box {...spanProps}>
             <Typography {...spanProps}> It failed</Typography>
             <InputNumber
-              value={hook.failureCount}
-              onChange={(e) => hook.setFailureCount(restrictNumber(e.target.value))}
+              value={hook.failureCount.get()}
+              onChange={(e) => {
+                hook.failureCount.set(e.target.value);
+              }}
             ></InputNumber>{' '}
-            <PlusButton
-              onClick={() => hook.setFailureCount(hook.failureCount + 1)}
-            >
+            <PlusButton onClick={() => hook.failureCount.increment()}>
               +
             </PlusButton>
             <Typography {...spanProps}>time(s).</Typography>

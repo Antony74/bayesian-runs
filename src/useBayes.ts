@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { bayes, sum } from './statUtils';
+import useNumber, { NumberHook } from './useNumber';
 
 interface BayesState {
   data: number[];
@@ -7,11 +8,12 @@ interface BayesState {
   failureCount: number;
 }
 
-interface BayesHook extends BayesState {
+interface BayesHook {
+  data: number[];
+  successCount: NumberHook;
+  failureCount: NumberHook;
   getGraphData: () => { x: number; y: number }[];
   getSum: () => number;
-  setSuccessCount: (count: number) => void;
-  setFailureCount: (count: number) => void;
   reset: () => void;
 }
 
@@ -24,6 +26,9 @@ const useBayes = (): BayesHook => {
     successCount: 0,
     failureCount: 0,
   });
+
+  const successCount = useNumber();
+  const failureCount = useNumber();
 
   const addSuccess = (data) => {
     const likelihoods = Array(N)
@@ -40,20 +45,21 @@ const useBayes = (): BayesHook => {
   };
 
   const makeNumbers = (successes: number, failures: number) => {
+    let data = state.data;
+    let currentSuccessCount = state.successCount;
+    let currentFailureCount = state.failureCount;
 
-    let {data, successCount, failureCount} = state;
-
-    if (successes < state.successCount || failures < state.failureCount) {
+    if (successes < currentSuccessCount || failures < currentFailureCount) {
       data = priors;
-      successCount = 0;
-      failureCount = 0;
+      currentSuccessCount = 0;
+      currentFailureCount = 0;
     }
 
-    data = Array(successes - successCount)
+    data = Array(successes - currentSuccessCount)
       .fill(0)
       .reduce(addSuccess, data);
 
-    data = Array(failures - failureCount)
+    data = Array(failures - currentFailureCount)
       .fill(0)
       .reduce(addFailure, data);
 
@@ -65,20 +71,27 @@ const useBayes = (): BayesHook => {
     });
   };
 
+  if (
+    successCount.get() !== state.successCount ||
+    failureCount.get() !== state.failureCount
+  ) {
+    makeNumbers(successCount.get(), failureCount.get());
+  }
+
   const hook = {
-    ...state,
+    data: state.data,
+    successCount,
+    failureCount,
     getGraphData: () =>
       state.data.map((y, index) => {
         const x = index / N;
         return { x, y };
       }),
     getSum: () => sum(state.data),
-    setSuccessCount: (successCount) =>
-      makeNumbers(successCount, state.failureCount),
-    setFailureCount: (failureCount) =>
-      makeNumbers(state.successCount, failureCount),
     reset: () => {
-      setState({ ...state, data: priors, successCount: 0, failureCount: 0 });
+      setState({ ...state, data: priors });
+      successCount.set('0');
+      failureCount.set('0');
     },
   };
 
