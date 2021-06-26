@@ -6,6 +6,8 @@ import {
   Button,
   Container,
   Input,
+  List,
+  ListItemText,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -104,6 +106,28 @@ const App = () => {
             <ContainedButton onClick={hook.reset} color="secondary">
               Reset
             </ContainedButton>
+            </Box>
+            <Box>
+            <Typography>
+              I have attempted to fix this transient bug. Assume that:
+              <List>
+                <ListItemText>
+                  • The program is failing randomly, with a fixed (but unknown)
+                  chance of failure.
+                </ListItemText>
+                <ListItemText>
+                  • Before the first time I ran the original program, all
+                  failure probabilities were equally likely.
+                </ListItemText>
+                <ListItemText>
+                  • An unsuccessful fix will have no effect on the frequency
+                  with which the problem is occurring.
+                </ListItemText>
+                <ListItemText>
+                  • The problem will never re-occur if the fix is successful.
+                </ListItemText>
+              </List>
+            </Typography>
           </Box>
           <Box>
             <BChart hook={hook}></BChart>
