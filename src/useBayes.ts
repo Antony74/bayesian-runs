@@ -88,11 +88,14 @@ const useBayes = (): BayesHook => {
   }
 
   const getHdi = (size: number): Interval => {
-    let interval: Interval = {
-      start: 0,
-      end: Number.MAX_SAFE_INTEGER,
-      range: Number.MAX_SAFE_INTEGER,
-    };
+    let intervals: Interval[] = [
+      {
+        start: 0,
+        end: Number.MAX_SAFE_INTEGER,
+        range: Number.MAX_SAFE_INTEGER,
+      },
+    ];
+
     for (let start = 0; start < N; ++start) {
       let total = 0;
       for (let index = start; index < N; ++index) {
@@ -103,13 +106,15 @@ const useBayes = (): BayesHook => {
             end: index,
             range: index - start,
           };
-          if (currentInterval.range < interval.range) {
-            interval = currentInterval;
+          if (currentInterval.range === intervals[0].range) {
+            intervals.push(currentInterval);
+          } else if (currentInterval.range < intervals[0].range) {
+            intervals = [currentInterval];
           }
         }
       }
     }
-    return interval;
+    return intervals[Math.floor((intervals.length - 1) / 2)];
   };
 
   const stats = React.useMemo(() => {
