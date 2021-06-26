@@ -18,8 +18,10 @@ export interface BayesHook {
   data: number[];
   successCount: NumberHook;
   failureCount: NumberHook;
+  successAfterFixCount: NumberHook;
   graphData: { x: number; y: number; stroke: string; fill: string }[];
   mostProbableX: number;
+  justOutsideX: number;
   hdi: Interval;
   getSum: () => number;
   getTotalCount: () => number;
@@ -36,8 +38,9 @@ const useBayes = (): BayesHook => {
     failureCount: 0,
   });
 
-  const successCount = useNumber();
-  const failureCount = useNumber();
+  const successCount = useNumber(0);
+  const failureCount = useNumber(0);
+  const successAfterFixCount = useNumber(1);
 
   const addSuccess = (data) => {
     const likelihoods = Array(N)
@@ -147,6 +150,7 @@ const useBayes = (): BayesHook => {
       graphData,
       mostProbableX: graphData[mostProbable.index].x,
       hdi: { start, end, range: end - start },
+      justOutsideX: graphData[Math.max(hdi.start - 1, 0)].x,
     };
   }, state.data);
 
@@ -154,14 +158,17 @@ const useBayes = (): BayesHook => {
     data: state.data,
     successCount,
     failureCount,
+    successAfterFixCount,
     graphData: stats.graphData,
     mostProbableX: stats.mostProbableX,
+    justOutsideX: stats.justOutsideX,
     hdi: stats.hdi,
     getSum: () => sum(state.data),
     reset: () => {
       setState({ ...state, data: priors });
       successCount.set('0');
       failureCount.set('0');
+      successAfterFixCount.set('1');
     },
     getTotalCount: () => hook.successCount.get() + hook.failureCount.get(),
   };

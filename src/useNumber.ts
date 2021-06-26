@@ -8,8 +8,8 @@ export interface NumberHook {
   set: (value: string) => void;
 }
 
-const useNumber = (): NumberHook => {
-  const [state, setState] = React.useState('0');
+const useNumber = (initialValue: number): NumberHook => {
+  const [state, setState] = React.useState(`${initialValue}`);
 
   const hook = {
     get: () => (state === '' ? 0 : parseInt(state)),
