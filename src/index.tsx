@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import BChart from './BChart';
+import GitHubForkRibbon from 'react-github-fork-ribbon';
 import ReactDOM from 'react-dom';
 import Stats from './Stats';
 import useBayes from './useBayes';
@@ -73,6 +74,14 @@ const App = () => {
 
   return (
     <div>
+      <GitHubForkRibbon
+        href="https://github.com/Antony74/bayesian-runs"
+        target="_blank"
+        position="right"
+      >
+        Fork me on GitHub
+      </GitHubForkRibbon>
+
       <Container>
         <Box {...centerProps}>
           <Box>
