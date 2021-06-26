@@ -75,7 +75,7 @@ const App = () => {
           <Box>
             <Typography>
               I have a computer program/job. I ran it a total of{' '}
-              {hook.successCount.get() + hook.failureCount.get()} time(s).
+              {hook.getTotalCount()} time(s).
             </Typography>
           </Box>
           <Box {...spanProps}>
@@ -107,7 +107,7 @@ const App = () => {
           </Box>
           <Box>
             <BChart graphData={hook.getGraphData()}></BChart>
-            <Stats data={hook.data}></Stats>
+            <Stats hook={hook}></Stats>
           </Box>
         </Box>
       </Container>

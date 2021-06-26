@@ -8,12 +8,13 @@ interface BayesState {
   failureCount: number;
 }
 
-interface BayesHook {
+export interface BayesHook {
   data: number[];
   successCount: NumberHook;
   failureCount: NumberHook;
   getGraphData: () => { x: number; y: number }[];
   getSum: () => number;
+  getTotalCount: () => number;
   reset: () => void;
 }
 
@@ -93,6 +94,7 @@ const useBayes = (): BayesHook => {
       successCount.set('0');
       failureCount.set('0');
     },
+    getTotalCount: () => hook.successCount.get() + hook.failureCount.get(),
   };
 
   return hook;
