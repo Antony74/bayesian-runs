@@ -12,7 +12,8 @@ export interface BayesHook {
   data: number[];
   successCount: NumberHook;
   failureCount: NumberHook;
-  getGraphData: () => { x: number; y: number }[];
+  graphData: { x: number; y: number; stroke: string, fill: string }[];
+  mostProbableX: number;
   getSum: () => number;
   getTotalCount: () => number;
   reset: () => void;
@@ -79,15 +80,37 @@ const useBayes = (): BayesHook => {
     makeNumbers(successCount.get(), failureCount.get());
   }
 
+  const stats = React.useMemo(() => {
+    const mostProbable = state.data.reduce(
+      (acc, value, index) => (value > acc.y ? { index, y: value } : acc),
+      { index: 0, y: 0 }
+    );
+
+    if (successCount.get() + failureCount.get() === 0) {
+      mostProbable.index = -1;
+    }
+
+    const graphData = state.data.map((y, index) => {
+      const x = index / N;
+
+      const stroke = index === mostProbable.index ? 'red' : 'black';
+      const fill = 'black';
+
+      return { x, y, stroke, fill };
+    });
+
+    return {
+      graphData,
+      mostProbableX: mostProbable.index > 0 ? graphData[mostProbable.index].x : 0,
+    };
+  }, state.data);
+
   const hook = {
     data: state.data,
     successCount,
     failureCount,
-    getGraphData: () =>
-      state.data.map((y, index) => {
-        const x = index / N;
-        return { x, y };
-      }),
+    graphData: stats.graphData,
+    mostProbableX: stats.mostProbableX,
     getSum: () => sum(state.data),
     reset: () => {
       setState({ ...state, data: priors });

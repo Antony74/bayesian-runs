@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from 'victory';
+import { BayesHook } from './useBayes';
 
 const xTicks = 10;
 
-interface BChartProps {
-  graphData: { x: number; y: number }[];
-}
-
-const BChart = (props: BChartProps): JSX.Element => (
+const BChart = ({ hook }: { hook: BayesHook }): JSX.Element => (
   <VictoryChart theme={VictoryTheme.material} width={800} height={200}>
     <VictoryAxis
       label="Chance of failure"
@@ -27,7 +24,20 @@ const BChart = (props: BChartProps): JSX.Element => (
         axisLabel: { padding: 30 },
       }}
     ></VictoryAxis>
-    <VictoryBar data={props.graphData}></VictoryBar>
+    <VictoryBar
+      data={hook.graphData}
+      style={{
+        data: {
+          stroke: (datum) => {
+            return hook.graphData[datum.index].stroke;
+          },
+          fill: (datum) => {
+            return hook.graphData[datum.index].fill;
+          },
+          strokeWidth: 1,
+        },
+      }}
+    ></VictoryBar>
   </VictoryChart>
 );
 

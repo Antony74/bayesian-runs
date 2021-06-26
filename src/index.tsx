@@ -106,7 +106,7 @@ const App = () => {
             </ContainedButton>
           </Box>
           <Box>
-            <BChart graphData={hook.getGraphData()}></BChart>
+            <BChart hook={hook}></BChart>
             <Stats hook={hook}></Stats>
           </Box>
         </Box>

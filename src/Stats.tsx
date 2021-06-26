@@ -4,15 +4,7 @@ import { Box, Typography } from '@material-ui/core';
 import { BayesHook } from './useBayes';
 import { sum } from './statUtils';
 
-interface StatsProps {
-  hook: BayesHook;
-}
-
-const Stats = ({ hook }: StatsProps): JSX.Element => {
-  const mostProbable = hook
-    .getGraphData()
-    .reduce((acc, value) => (value.y > acc.y ? value : acc), { x: 0, y: 0 });
-
+const Stats = ({ hook }: { hook: BayesHook }): JSX.Element => {
   if (hook.getTotalCount() === 0) {
     return <></>;
   }
@@ -22,7 +14,9 @@ const Stats = ({ hook }: StatsProps): JSX.Element => {
       <Typography>
         Sum: {sum(hook.data)} (sanity check, should be close to 1)
       </Typography>
-      <Typography>Most probable chance of failure: {mostProbable.x}</Typography>
+      <Typography>
+        Most probable chance of failure: {hook.mostProbableX}
+      </Typography>
       <Typography>
         Failures divided by total:{' '}
         {hook.failureCount.get() / hook.getTotalCount()}
