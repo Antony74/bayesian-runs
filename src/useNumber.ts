@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const maxLength = 3;
+const maxLength = 4;
 
 export interface NumberHook {
   get: () => number;
