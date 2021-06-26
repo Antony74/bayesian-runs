@@ -2,7 +2,7 @@
   "name": "bayesian-runs",
   "version": "1.0.0",
   "scripts": {
-    "bayes": "ts-node src/bayes.ts",
+    "build": "parcel build src/index.html",
     "lint": "eslint . --ext .ts --ext .tsx",
     "preinstall": "npx npm-force-resolutions",
     "prettier": "prettier --write src/*.{ts,js,tsx} && eslint src --ext .ts --ext .tsx --fix",
