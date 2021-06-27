@@ -7,13 +7,12 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
-import { indentProps, spanProps } from './props';
 import AfterFix from './AfterFix';
 import BChart from './BChart';
+import BeforeFix from './BeforeFix';
 import GitHubForkRibbon from 'react-github-fork-ribbon';
-import InputNumber from './InputNumber';
+import { indentProps } from './props';
 import ReactDOM from 'react-dom';
-import ResetButton from './ResetButton';
 import Stats from './Stats';
 import useBayes from './useBayes';
 
@@ -32,23 +31,7 @@ const App = () => {
 
       <Container>
         <Box>
-          <Box>
-            <Typography>
-              I have a computer program/job. I ran it a total of{' '}
-              {hook.getTotalCount()} time(s).
-            </Typography>
-          </Box>
-          <Box {...spanProps} {...indentProps}>
-            <Typography {...spanProps}>It succeeded </Typography>
-            <InputNumber numberHook={hook.successCount}></InputNumber>
-            <Typography {...spanProps}>times(s).</Typography>
-          </Box>
-          <Box {...spanProps}>
-            <Typography {...spanProps}> It failed</Typography>
-            <InputNumber numberHook={hook.failureCount}></InputNumber>
-            <Typography {...spanProps}>time(s).</Typography>
-            <ResetButton onClick={hook.reset}></ResetButton>
-          </Box>
+          <BeforeFix hook={hook}></BeforeFix>
           <Box>
             <Typography>
               I have attempted to fix this transient bug. Assume that:
