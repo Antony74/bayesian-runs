@@ -25,7 +25,10 @@ const AfterFix = ({ hook }: { hook: BayesHook }): JSX.Element => {
           On average, this would have caused the original program to have failed
           (at least once){' '}
           {(1 -
-            Math.pow(averageChanceOfFailure, hook.successAfterFixCount.get())) *
+            Math.pow(
+              1 - averageChanceOfFailure,
+              hook.successAfterFixCount.get()
+            )) *
             100}
           % of the time, so I could take that as the level of 'confidence'
           demonstrated in my fix.
