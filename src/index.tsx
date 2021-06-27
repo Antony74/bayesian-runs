@@ -2,20 +2,19 @@ import '@fontsource/roboto';
 import * as React from 'react';
 import {
   Box,
-  BoxProps,
   Button,
   Container,
   List,
   ListItemText,
   Typography,
 } from '@material-ui/core';
+import { indentProps, spanProps } from './props';
 import AfterFix from './AfterFix';
 import BChart from './BChart';
 import GitHubForkRibbon from 'react-github-fork-ribbon';
 import InputNumber from './InputNumber';
 import PlusButton from './PlusButton';
 import ReactDOM from 'react-dom';
-import spanProps from './spanProps';
 import Stats from './Stats';
 import useBayes from './useBayes';
 import useStyles from './useStyles';
@@ -26,8 +25,6 @@ const ContainedButton = (props) => {
     <Button className={classes.button} variant="contained" {...props}></Button>
   );
 };
-
-const centerProps = { align: 'center' } as BoxProps;
 
 const App = () => {
   const hook = useBayes();
@@ -43,14 +40,14 @@ const App = () => {
       </GitHubForkRibbon>
 
       <Container>
-        <Box {...centerProps}>
+        <Box>
           <Box>
             <Typography>
               I have a computer program/job. I ran it a total of{' '}
               {hook.getTotalCount()} time(s).
             </Typography>
           </Box>
-          <Box {...spanProps}>
+          <Box {...spanProps} {...indentProps}>
             <Typography {...spanProps}>It succeeded </Typography>
             <InputNumber
               value={hook.successCount.get()}
@@ -80,23 +77,25 @@ const App = () => {
           <Box>
             <Typography>
               I have attempted to fix this transient bug. Assume that:
-              <List>
-                <ListItemText>
-                  • The program is failing randomly, with a fixed (but unknown)
-                  chance of failure.
-                </ListItemText>
-                <ListItemText>
-                  • Before the first time I ran the original program, all
-                  failure probabilities were equally likely.
-                </ListItemText>
-                <ListItemText>
-                  • An unsuccessful fix will have no effect on the frequency
-                  with which the problem is occurring.
-                </ListItemText>
-                <ListItemText>
-                  • The problem will never re-occur if the fix is successful.
-                </ListItemText>
-              </List>
+              <Box {...indentProps}>
+                <List>
+                  <ListItemText>
+                    • The program is failing randomly, with a fixed (but
+                    unknown) chance of failure.
+                  </ListItemText>
+                  <ListItemText>
+                    • Before the first time I ran the original program, all
+                    failure probabilities were equally likely.
+                  </ListItemText>
+                  <ListItemText>
+                    • An unsuccessful fix will have no effect on the frequency
+                    with which the problem is occurring.
+                  </ListItemText>
+                  <ListItemText>
+                    • The problem will never re-occur if the fix is successful.
+                  </ListItemText>
+                </List>
+              </Box>
             </Typography>
           </Box>
           <Box>
@@ -107,6 +106,12 @@ const App = () => {
           </Box>
         </Box>
       </Container>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
