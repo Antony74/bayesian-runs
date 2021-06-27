@@ -2,7 +2,6 @@
   "name": "bayesian-runs",
   "version": "1.0.0",
   "scripts": {
-    "bayes": "ts-node src/bayes.ts",
     "build": "parcel build src/index.html",
     "lint": "eslint . --ext .ts --ext .tsx",
     "preinstall": "npx npm-force-resolutions",
@@ -28,6 +27,7 @@
     "eslint-plugin-no-mixed-operators": "^1.1.1",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "parcel": "^2.0.0-nightly.718",
+    "postcss": "8.3.5",
     "prettier": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -38,7 +38,7 @@
   },
   "resolutions": {
     "css-what": "5.0.1",
-    "postcss": "8.2.15"
+    "postcss": "8.3.5"
   },
   "prettier": {
     "singleQuote": true
