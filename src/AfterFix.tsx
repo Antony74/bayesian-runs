@@ -3,7 +3,6 @@ import { Box, Typography } from '@material-ui/core';
 import { indentProps, spanProps } from './props';
 import { BayesHook } from './useBayes';
 import InputNumber from './InputNumber';
-import PlusButton from './PlusButton';
 
 const AfterFix = ({ hook }: { hook: BayesHook }): JSX.Element => {
   if (hook.getTotalCount() === 0) {
@@ -15,14 +14,8 @@ const AfterFix = ({ hook }: { hook: BayesHook }): JSX.Element => {
   return (
     <Box>
       <Box>
-        <Typography {...spanProps}>I run my program a further</Typography>{' '}
-        <InputNumber
-          value={hook.successAfterFixCount.get()}
-          onChange={(e) => hook.successAfterFixCount.set(e.target.value)}
-        ></InputNumber>
-        <PlusButton onClick={() => hook.successAfterFixCount.increment()}>
-          +
-        </PlusButton>
+        <Typography {...spanProps}>I run my program a further </Typography>
+        <InputNumber numberHook={hook.successAfterFixCount}></InputNumber>
         <Typography {...spanProps}>
           time(s), and each run is successful.
         </Typography>

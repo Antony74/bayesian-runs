@@ -13,7 +13,6 @@ import AfterFix from './AfterFix';
 import BChart from './BChart';
 import GitHubForkRibbon from 'react-github-fork-ribbon';
 import InputNumber from './InputNumber';
-import PlusButton from './PlusButton';
 import ReactDOM from 'react-dom';
 import Stats from './Stats';
 import useBayes from './useBayes';
@@ -49,26 +48,12 @@ const App = () => {
           </Box>
           <Box {...spanProps} {...indentProps}>
             <Typography {...spanProps}>It succeeded </Typography>
-            <InputNumber
-              value={hook.successCount.get()}
-              onChange={(e) => hook.successCount.set(e.target.value)}
-            ></InputNumber>
-            <PlusButton onClick={() => hook.successCount.increment()}>
-              +
-            </PlusButton>
+            <InputNumber numberHook={hook.successCount}></InputNumber>
             <Typography {...spanProps}>times(s).</Typography>
           </Box>
           <Box {...spanProps}>
             <Typography {...spanProps}> It failed</Typography>
-            <InputNumber
-              value={hook.failureCount.get()}
-              onChange={(e) => {
-                hook.failureCount.set(e.target.value);
-              }}
-            ></InputNumber>{' '}
-            <PlusButton onClick={() => hook.failureCount.increment()}>
-              +
-            </PlusButton>
+            <InputNumber numberHook={hook.failureCount}></InputNumber>
             <Typography {...spanProps}>time(s).</Typography>
             <ContainedButton onClick={hook.reset} color="secondary">
               Reset
