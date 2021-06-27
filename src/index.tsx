@@ -2,7 +2,6 @@ import '@fontsource/roboto';
 import * as React from 'react';
 import {
   Box,
-  Button,
   Container,
   List,
   ListItemText,
@@ -14,16 +13,9 @@ import BChart from './BChart';
 import GitHubForkRibbon from 'react-github-fork-ribbon';
 import InputNumber from './InputNumber';
 import ReactDOM from 'react-dom';
+import ResetButton from './ResetButton';
 import Stats from './Stats';
 import useBayes from './useBayes';
-import useStyles from './useStyles';
-
-const ContainedButton = (props) => {
-  const classes = useStyles();
-  return (
-    <Button className={classes.button} variant="contained" {...props}></Button>
-  );
-};
 
 const App = () => {
   const hook = useBayes();
@@ -55,9 +47,7 @@ const App = () => {
             <Typography {...spanProps}> It failed</Typography>
             <InputNumber numberHook={hook.failureCount}></InputNumber>
             <Typography {...spanProps}>time(s).</Typography>
-            <ContainedButton onClick={hook.reset} color="secondary">
-              Reset
-            </ContainedButton>
+            <ResetButton onClick={hook.reset}></ResetButton>
           </Box>
           <Box>
             <Typography>
