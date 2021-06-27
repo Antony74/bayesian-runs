@@ -5,30 +5,20 @@ import {
   BoxProps,
   Button,
   Container,
-  Input,
   List,
   ListItemText,
-  makeStyles,
   Typography,
 } from '@material-ui/core';
+import AfterFix from './AfterFix';
 import BChart from './BChart';
 import GitHubForkRibbon from 'react-github-fork-ribbon';
+import InputNumber from './InputNumber';
+import PlusButton from './PlusButton';
 import ReactDOM from 'react-dom';
+import spanProps from './spanProps';
 import Stats from './Stats';
 import useBayes from './useBayes';
-
-const useStyles = makeStyles((theme) => {
-  const spacing = theme.spacing(2);
-  return {
-    button: {
-      margin: spacing,
-    },
-    plusButton: {
-      marginTop: spacing,
-      marginBottom: spacing,
-    },
-  };
-});
+import useStyles from './useStyles';
 
 const ContainedButton = (props) => {
   const classes = useStyles();
@@ -37,40 +27,10 @@ const ContainedButton = (props) => {
   );
 };
 
-const PlusButton = (props) => {
-  const classes = useStyles();
-  return (
-    <Button
-      className={classes.plusButton}
-      variant="contained"
-      style={{
-        maxWidth: '30px',
-        maxHeight: '30px',
-        minWidth: '30px',
-        minHeight: '30px',
-      }}
-      {...props}
-    ></Button>
-  );
-};
-
-const InputNumber = (props) => (
-  <Input
-    style={{
-      maxWidth: '60px',
-      minWidth: '60px',
-    }}
-    {...props}
-  ></Input>
-);
-
-const spanProps = { style: { display: 'inline-block', margin: 5 } };
-
 const centerProps = { align: 'center' } as BoxProps;
 
 const App = () => {
   const hook = useBayes();
-  const averageChanceOfFailure = hook.failureCount.get() / hook.getTotalCount();
 
   return (
     <div>
@@ -142,50 +102,8 @@ const App = () => {
           <Box>
             <BChart hook={hook}></BChart>
             <Stats hook={hook}></Stats>
-          </Box>
-          <Box>
-            <Typography {...spanProps}>I run my program a further</Typography>{' '}
-            <InputNumber
-              value={hook.successAfterFixCount.get()}
-              onChange={(e) => hook.successAfterFixCount.set(e.target.value)}
-            ></InputNumber>
-            <PlusButton onClick={() => hook.successAfterFixCount.increment()}>
-              +
-            </PlusButton>
-            <Typography {...spanProps}>
-              time(s), and each run is successful.
-            </Typography>
-            <Typography>
-              On average, this would have caused the original program to have
-              failed (at least once){' '}
-              {(1 -
-                Math.pow(
-                  averageChanceOfFailure,
-                  hook.successAfterFixCount.get()
-                )) *
-                100}
-              % of the time, so I could take that as the level of 'confidence'
-              demonstrated in my fix.
-            </Typography>
-            <Typography>
-              However, that doesn't take into account how much data we have
-              collected and what certainty that gives us (e.g. that calculation
-              would return the same result for 1 failure in 10 runs at it would
-              for 100 failures in 1000 runs)
-            </Typography>
-            <Typography>
-              If instead I take the value just outside of the 95% HDI, to the
-              left where the chance of failure is {hook.justOutsideX * 100}%.
-              This would have caused the original program to have failed (at
-              least once){' '}
-              {(1 -
-                Math.pow(
-                  1 - hook.justOutsideX,
-                  hook.successAfterFixCount.get()
-                )) *
-                100}
-              % of the time.
-            </Typography>
+            <br></br>
+            <AfterFix hook={hook}></AfterFix>
           </Box>
         </Box>
       </Container>
