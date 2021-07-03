@@ -17,7 +17,10 @@ const Stats = ({ hook }: { hook: BayesHook }): JSX.Element => {
         Sum: {sum(hook.data)} (sanity check, should be close to 1)
       </Typography>
       <Typography>
-        Most probable chance of failure: {hook.mostProbableX} (shown in red)
+       Mode: {hook.mode} (shown in red)
+      </Typography>
+      <Typography>
+       Median: {hook.median} (shown in green)
       </Typography>
       <Typography>
         Failures divided by total:{' '}
