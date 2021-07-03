@@ -16,12 +16,8 @@ const Stats = ({ hook }: { hook: BayesHook }): JSX.Element => {
       <Typography>
         Sum: {sum(hook.data)} (sanity check, should be close to 1)
       </Typography>
-      <Typography>
-       Mode: {hook.mode} (shown in red)
-      </Typography>
-      <Typography>
-       Median: {hook.median} (shown in green)
-      </Typography>
+      <Typography>Mode: {hook.mode} (shown in red)</Typography>
+      <Typography>Median: {hook.median} (shown in green)</Typography>
       <Typography>
         Failures divided by total:{' '}
         {hook.failureCount.get() / hook.getTotalCount()}

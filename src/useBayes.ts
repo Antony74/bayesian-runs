@@ -30,7 +30,7 @@ export interface BayesHook {
 }
 
 const useBayes = (): BayesHook => {
-  const N = 100;
+  const N = 101;
   const priors: number[] = Array(N).fill(1 / N);
 
   const [state, setState] = React.useState<BayesState>({
@@ -127,16 +127,22 @@ const useBayes = (): BayesHook => {
       { index: 0, y: 0 }
     );
 
+    const tolerence = 0.00001;
+
     const medianIndex = state.data.reduce(
       (acc, value, index) => {
         if (acc.index !== -1) {
           return acc;
         }
-        acc.sum += value;
-        if (acc.sum >= 0.5) {
-          acc.index = index;
+        const newSum = acc.sum + value;
+        if (newSum >= 0.5) {
+          if (newSum - 0.5 >= 0.5 - acc.sum + tolerence ) {
+            return { index: index - 1, sum: acc.sum };
+          } else {
+            return { index, sum: newSum };
+          }
         }
-        return acc;
+        return { index: -1, sum: newSum };
       },
       { index: -1, sum: 0 }
     ).index;
@@ -146,7 +152,7 @@ const useBayes = (): BayesHook => {
     const hdi = getHdi(0.95);
 
     const graphData = state.data.map((y, index) => {
-      const x = index / N;
+      const x = index / (N - 1);
 
       let fill = 'black';
       let stroke = 'black';
