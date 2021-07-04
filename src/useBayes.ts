@@ -122,7 +122,6 @@ const useBayes = (): BayesHook => {
   };
 
   const stats = React.useMemo(() => {
-
     const tolerence = 0.00001;
 
     const mode = state.data.reduce(

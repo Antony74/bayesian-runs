@@ -9,8 +9,6 @@ const AfterFix = ({ hook }: { hook: BayesHook }): JSX.Element => {
     return <></>;
   }
 
-  const averageChanceOfFailure = hook.failureCount.get() / hook.getTotalCount();
-
   return (
     <Box>
       <Box>
@@ -22,22 +20,17 @@ const AfterFix = ({ hook }: { hook: BayesHook }): JSX.Element => {
       </Box>
       <Box {...indentProps}>
         <Typography>
-          On average, this would have caused the original program to have failed
-          (at least once){' '}
-          {(1 -
-            Math.pow(
-              1 - averageChanceOfFailure,
-              hook.successAfterFixCount.get()
-            )) *
+          On average (median), this would have caused the original program to
+          have failed (at least once){' '}
+          {(1 - Math.pow(1 - hook.median, hook.successAfterFixCount.get())) *
             100}
           % of the time, so I could take that as the level of 'confidence'
           demonstrated in my fix.
         </Typography>
         <Typography>
           However, that doesn't take into account how much data we have
-          collected and what certainty that gives us (e.g. that calculation
-          would return the same result for 1 failure in 10 runs at it would for
-          100 failures in 1000 runs)
+          collected (we should hope more data would give us more certainty and
+          therefore take less attempts to verify).
         </Typography>
         <Typography>
           If instead I take the value just outside of the 95% HDI, to the left
