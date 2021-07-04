@@ -122,12 +122,15 @@ const useBayes = (): BayesHook => {
   };
 
   const stats = React.useMemo(() => {
-    const mode = state.data.reduce(
-      (acc, value, index) => (value > acc.y ? { index, y: value } : acc),
-      { index: 0, y: 0 }
-    );
 
     const tolerence = 0.00001;
+
+    const mode = state.data.reduce(
+      (acc, value, index) => {
+        return value > acc.y + tolerence ? { index, y: value } : acc;
+      },
+      { index: 0, y: 0 }
+    );
 
     const medianIndex = state.data.reduce(
       (acc, value, index) => {
@@ -136,7 +139,7 @@ const useBayes = (): BayesHook => {
         }
         const newSum = acc.sum + value;
         if (newSum >= 0.5) {
-          if (newSum - 0.5 >= 0.5 - acc.sum + tolerence ) {
+          if (newSum - 0.5 >= 0.5 - acc.sum + tolerence) {
             return { index: index - 1, sum: acc.sum };
           } else {
             return { index, sum: newSum };
