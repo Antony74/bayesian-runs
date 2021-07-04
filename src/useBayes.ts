@@ -20,7 +20,8 @@ export interface BayesHook {
   failureCount: NumberHook;
   successAfterFixCount: NumberHook;
   graphData: { x: number; y: number; stroke: string; fill: string }[];
-  mostProbableX: number;
+  mode: number;
+  median: number;
   justOutsideX: number;
   hdi: Interval;
   getSum: () => number;
@@ -29,7 +30,7 @@ export interface BayesHook {
 }
 
 const useBayes = (): BayesHook => {
-  const N = 100;
+  const N = 101;
   const priors: number[] = Array(N).fill(1 / N);
 
   const [state, setState] = React.useState<BayesState>({
@@ -121,26 +122,53 @@ const useBayes = (): BayesHook => {
   };
 
   const stats = React.useMemo(() => {
-    const mostProbable = state.data.reduce(
-      (acc, value, index) => (value > acc.y ? { index, y: value } : acc),
+    const tolerence = 0.00001;
+
+    const mode = state.data.reduce(
+      (acc, value, index) => {
+        return value > acc.y + tolerence ? { index, y: value } : acc;
+      },
       { index: 0, y: 0 }
     );
+
+    const medianIndex = state.data.reduce(
+      (acc, value, index) => {
+        if (acc.index !== -1) {
+          return acc;
+        }
+        const newSum = acc.sum + value;
+        if (newSum >= 0.5) {
+          if (newSum - 0.5 >= 0.5 - acc.sum + tolerence) {
+            return { index: index - 1, sum: acc.sum };
+          } else {
+            return { index, sum: newSum };
+          }
+        }
+        return { index: -1, sum: newSum };
+      },
+      { index: -1, sum: 0 }
+    ).index;
 
     const totalCount = successCount.get() + failureCount.get();
 
     const hdi = getHdi(0.95);
 
     const graphData = state.data.map((y, index) => {
-      const x = index / N;
+      const x = index / (N - 1);
 
-      if (totalCount === 0) {
-        return { x, y, stroke: 'black', fill: 'black' };
-      } else {
-        const stroke = index === mostProbable.index ? 'red' : 'black';
-        const fill = hdi.start <= index && index <= hdi.end ? 'blue' : 'black';
+      let fill = 'black';
+      let stroke = 'black';
 
-        return { x, y, stroke, fill };
+      if (totalCount !== 0) {
+        stroke = index === mode.index ? 'red' : 'black';
+        fill = hdi.start <= index && index <= hdi.end ? 'blue' : 'black';
       }
+
+      if (index === medianIndex) {
+        fill = 'green';
+      }
+
+      return { x, y, stroke, fill };
     });
 
     const start = graphData[hdi.start].x;
@@ -148,7 +176,8 @@ const useBayes = (): BayesHook => {
 
     return {
       graphData,
-      mostProbableX: graphData[mostProbable.index].x,
+      mode: graphData[mode.index].x,
+      median: graphData[medianIndex].x,
       hdi: { start, end, range: end - start },
       justOutsideX: graphData[Math.max(hdi.start - 1, 0)].x,
     };
@@ -160,7 +189,8 @@ const useBayes = (): BayesHook => {
     failureCount,
     successAfterFixCount,
     graphData: stats.graphData,
-    mostProbableX: stats.mostProbableX,
+    mode: stats.mode,
+    median: stats.median,
     justOutsideX: stats.justOutsideX,
     hdi: stats.hdi,
     getSum: () => sum(state.data),
